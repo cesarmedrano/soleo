@@ -52,59 +52,6 @@ function site_copy()
 add_shortcode('site_copy', 'site_copy');
 // end add Pulpora copy, current year and site title shortcode
 
-// add roboto fonts
-if (!function_exists('twentytwentytwo_get_font_face_styles')):
-    /**
-     * Get font face styles.
-     * Called by functions twentytwentytwo_styles() and twentytwentytwo_editor_styles() above.
-     *
-     * @since Twenty Twenty-Two 1.0
-     *
-     * @return string
-     */
-    function twentytwentytwo_get_font_face_styles()
-    {
-        return "
-		/* latin-ext */
-		@font-face {
-		  font-family: 'Roboto';
-		  font-style: italic;
-		  font-weight: 400;
-		  font-display: swap;
-		  src: url(https://fonts.gstatic.com/s/roboto/v29/KFOkCnqEu92Fr1Mu51xGIzIXKMnyrYk.woff2) format('woff2');
-		  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-		}
-		/* latin */
-		@font-face {
-		  font-family: 'Roboto';
-		  font-style: italic;
-		  font-weight: 400;
-		  font-display: swap;
-		  src: url(https://fonts.gstatic.com/s/roboto/v29/KFOkCnqEu92Fr1Mu51xIIzIXKMny.woff2) format('woff2');
-		  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-		}
-		/* latin-ext */
-		@font-face {
-		  font-family: 'Roboto';
-		  font-style: normal;
-		  font-weight: 400;
-		  font-display: swap;
-		  src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2) format('woff2');
-		  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-		}
-		/* latin */
-		@font-face {
-		  font-family: 'Roboto';
-		  font-style: normal;
-		  font-weight: 400;
-		  font-display: swap;
-		  src: url(https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2) format('woff2');
-		  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-		}
-		";
-    }
-endif;
-
 if (!function_exists('twentytwentytwo_preload_webfonts')):
     /**
      * Preloads the main web font to improve performance.
