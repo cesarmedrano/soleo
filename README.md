@@ -1,2 +1,2 @@
-# soleo
+# SOLEO Theme
 CreateApe WordPress challenge
