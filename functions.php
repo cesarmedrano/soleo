@@ -1,308 +1,503 @@
 <?php
+
 /**
- * CreateApe Child functions and definitions
+ * Include Theme Customizer.
  *
- * @link https://developer.wordpress.org/themes/basics/theme-functions/
- *
- * @package WordPress
- * @subpackage CreateApe Child
- * @since CreateApe Child 1.0
+ * @since v1.0
  */
-// Wp v4.7.1 and higher
-add_filter(
-    'wp_check_filetype_and_ext',
-    function ($data, $file, $filename, $mimes) {
-        $filetype = wp_check_filetype($filename, $mimes);
-        return [
-            'ext' => $filetype['ext'],
-            'type' => $filetype['type'],
-            'proper_filename' => $data['proper_filename'],
-        ];
-    },
-    10,
-    4
-);
-
-function cc_mime_types($mimes)
-{
-    $mimes['svg'] = 'image/svg+xml';
-    return $mimes;
+$theme_customizer = __DIR__ . '/inc/customizer.php';
+if ( is_readable( $theme_customizer ) ) {
+	require_once $theme_customizer;
 }
-add_filter('upload_mimes', 'cc_mime_types');
 
-function fix_svg()
-{
-    echo '<style type="text/css">
-        .attachment-266x266, .thumbnail img {
-             width: 100% !important;
-             height: auto !important;
-        }
-        </style>';
+
+/**
+ * Include Support for wordpress.com-specific functions.
+ * 
+ * @since v1.0
+ */
+$theme_wordpresscom = __DIR__ . '/inc/wordpresscom.php';
+if ( is_readable( $theme_wordpresscom ) ) {
+	require_once $theme_wordpresscom;
 }
-add_action('admin_head', 'fix_svg');
 
-// add Pulpora copy, current year and site title shortcode
-function site_copy()
-{
-    $year = date('Y');
-    $copy = 'Copyright';
-    $site_title = get_bloginfo('name');
-    return $copy . '&nbsp;' . $year . '&nbsp;' . $site_title;
+
+/**
+ * Set the content width based on the theme's design and stylesheet.
+ *
+ * @since v1.0
+ */
+if ( ! isset( $content_width ) ) {
+	$content_width = 800;
 }
-add_shortcode('site_copy', 'site_copy');
-// end add Pulpora copy, current year and site title shortcode
 
-if (!function_exists('twentytwentytwo_preload_webfonts')):
-    /**
-     * Preloads the main web font to improve performance.
-     *
-     * Only the main web font (font-style: normal) is preloaded here since that font is always relevant (it is used
-     * on every heading, for example). The other font is only needed if there is any applicable content in italic style,
-     * and therefore preloading it would in most cases regress performance when that font would otherwise not be loaded
-     * at all.
-     *
-     * @since Twenty Twenty-Two 1.0
-     *
-     * @return void
-     */
-    function twentytwentytwo_preload_webfonts()
-    {
-        ?>
-		<link rel="preload" href="<?php echo esc_url(
-      'https://fonts.gstatic.com/s/roboto/v29/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2'
-  ); ?>" as="font" type="font/woff2" crossorigin>
-		<?php
-    }
+
+/**
+ * General Theme Settings.
+ *
+ * @since v1.0
+ */
+if ( ! function_exists( 'createape_setup_theme' ) ) :
+	function createape_setup_theme() {
+		// Make theme available for translation: Translations can be filed in the /languages/ directory.
+		load_theme_textdomain( 'createape', __DIR__ . '/languages' );
+
+		// Theme Support.
+		add_theme_support( 'title-tag' );
+		add_theme_support( 'automatic-feed-links' );
+		add_theme_support( 'post-thumbnails' );
+		add_theme_support(
+			'html5',
+			array(
+				'search-form',
+				'comment-form',
+				'comment-list',
+				'gallery',
+				'caption',
+				'script',
+				'style',
+				'navigation-widgets',
+			)
+		);
+
+		// Add support for Block Styles.
+		add_theme_support( 'wp-block-styles' );
+		// Add support for full and wide alignment.
+		add_theme_support( 'align-wide' );
+		// Add support for editor styles.
+		add_theme_support( 'editor-styles' );
+		// Enqueue editor styles.
+		add_editor_style( 'style-editor.css' );
+
+		// Default Attachment Display Settings.
+		update_option( 'image_default_align', 'none' );
+		update_option( 'image_default_link_type', 'none' );
+		update_option( 'image_default_size', 'large' );
+
+		// Custom CSS-Styles of Wordpress Gallery.
+		add_filter( 'use_default_gallery_style', '__return_false' );
+	}
+	add_action( 'after_setup_theme', 'createape_setup_theme' );
+
+	// Disable Block Directory: https://github.com/WordPress/gutenberg/blob/trunk/docs/reference-guides/filters/editor-filters.md#block-directory
+	remove_action( 'enqueue_block_editor_assets', 'wp_enqueue_editor_block_directory_assets' );
+	remove_action( 'enqueue_block_editor_assets', 'gutenberg_enqueue_block_editor_assets_block_directory' );
 endif;
 
-add_action('wp_head', 'twentytwentytwo_preload_webfonts');
-// enqueue scripts and style
-function pulpora_child_theme_enqueue_styles()
-{
-    $version_file = 0;
-    // Custom CSS
-    wp_enqueue_style(
-        'custom style',
-        get_stylesheet_directory_uri() . '/assets/css/app.css?'.$version_file
-    );
-    // Bootstrap CSS 5.2.0
-    wp_enqueue_style(
-        'bootstrap grid css',
-        'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx'
-    );
-    // Animate CSS
-    wp_enqueue_style(
-        'animate',
-        'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css'
-    );
-    // WOW JS Library
-    wp_enqueue_script(
-        'wow',
-        'https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js',
-        [],
-        '1.0',
-        true
-    );
-    // Custom script
-    wp_enqueue_script(
-        'script',
-        get_stylesheet_directory_uri() . '/assets/js/script.js?'.$version_file,
-        [],
-        '1.0',
-        true
-    );
-}
-add_action('wp_enqueue_scripts', 'pulpora_child_theme_enqueue_styles');
-// end enqueue scripts and style
-// add style and scripts to admin
-function admin_style()
-{
-    wp_enqueue_style(
-        'admin-styles',
-        get_stylesheet_directory_uri() . '/assets/css/admin.css?v=4'
-    );
-}
-add_action('admin_enqueue_scripts', 'admin_style');
-// end style and scripts to admin
-//  remove category from archive page title
-add_filter('get_the_archive_title', function ($title) {
-    if (is_category()) {
-        $title = single_cat_title('', false);
-    } elseif (is_tag()) {
-        $title = single_tag_title('', false);
-    } elseif (is_author()) {
-        $title = '<span class="vcard">' . get_the_author() . '</span>';
-    }
 
-    return $title;
-});
-//  end remove category from archive page title
-// personalizar frase Gracias por crear con WordPress
-function modify_footer_admin_message($message)
-{
-    $message =
-        'Proyecto realizado por <a href="https://www.pulpora.com" target="_blank">Pulpora SRL</a>';
-    echo $message;
-}
-add_filter('admin_footer_text', 'modify_footer_admin_message');
-// fin personalizar frase Gracias por crear con WordPress
-// // deregister native ACF Form front styles
-add_action('wp_enqueue_scripts', 'acf_form_deregister_styles');
-function acf_form_deregister_styles()
-{
-    // Deregister ACF Form style
-    wp_deregister_style('acf-global');
-    wp_deregister_style('acf-input');
+/**
+ * Fire the wp_body_open action.
+ *
+ * Added for backwards compatibility to support pre 5.2.0 WordPress versions.
+ *
+ * @since v2.2
+ */
+if ( ! function_exists( 'wp_body_open' ) ) :
+	function wp_body_open() {
+		/**
+		 * Triggered after the opening <body> tag.
+		 *
+		 * @since v2.2
+		 */
+		do_action( 'wp_body_open' );
+	}
+endif;
 
-    // Avoid dependency conflict
-    wp_register_style('acf-global', false);
-    wp_register_style('acf-input', false);
-}
-// end deregister native ACF Form front styles
-// bootstrap row, success message & submit button
-add_filter('acf/validate_form', 'acf_form_bootstrap_styles');
-function acf_form_bootstrap_styles($args)
-{
-    // Before ACF Form
-    if (!$args['html_before_fields']) {
-        $args['html_before_fields'] = '<div class="row">';
-    } // May be .form-row
 
-    // After ACF Form
-    if (!$args['html_after_fields']) {
-        $args['html_after_fields'] = '</div>';
-    }
+/**
+ * Add new User fields to Userprofile.
+ *
+ * @since v1.0
+ */
+if ( ! function_exists( 'createape_add_user_fields' ) ) :
+	function createape_add_user_fields( $fields ) {
+		// Add new fields.
+		$fields['facebook_profile'] = 'Facebook URL';
+		$fields['twitter_profile']  = 'Twitter URL';
+		$fields['linkedin_profile'] = 'LinkedIn URL';
+		$fields['xing_profile']     = 'Xing URL';
+		$fields['github_profile']   = 'GitHub URL';
 
-    // Success Message
-    if (
-        $args['html_updated_message'] ==
-        '<div id="message" class="updated"><p>%s</p></div>'
-    ) {
-        $args['html_updated_message'] =
-            '<div id="message" class="updated alert alert-success">%s</div>';
-    }
+		return $fields;
+	}
+	add_filter( 'user_contactmethods', 'createape_add_user_fields' ); // get_user_meta( $user->ID, 'facebook_profile', true );
+endif;
 
-    // Submit button
-    if (
-        $args['html_submit_button'] ==
-        '<input type="submit" class="acf-button button button-primary button-large" value="%s" />'
-    ) {
-        $args['html_submit_button'] =
-            '<input type="submit" class="acf-button button button-primary button-large btn btn-primary" value="%s" />';
-    }
 
-    return $args;
-}
-// end bootstrap row, success message & submit button
-// wrap fields with form-group, col-12 & adding form-control
-add_filter('acf/prepare_field', 'acf_form_fields_bootstrap_styles');
-function acf_form_fields_bootstrap_styles($field)
-{
-    // Target ACF Form Front only
-    if (is_admin() && !wp_doing_ajax()) {
-        return $field;
-    }
+/**
+ * Test if a page is a blog page.
+ * if ( is_blog() ) { ... }
+ *
+ * @since v1.0
+ */
+function is_blog() {
+	global $post;
+	$posttype = get_post_type( $post );
 
-    // Add .form-group & .col-12 fallback on fields wrappers
-    $field['wrapper']['class'] .= ' col mb-1';
-
-    // Add .form-control on fields
-    $field['class'] .= ' form-control';
-
-    return $field;
-}
-// end wrap fields with form-group, col-12 & adding form-control
-// adding text-danger on required
-add_filter('acf/get_field_label', 'acf_form_fields_required_bootstrap_styles');
-function acf_form_fields_required_bootstrap_styles($label)
-{
-    // Target ACF Form Front only
-    if (is_admin() && !wp_doing_ajax()) {
-        return $label;
-    }
-    // Add .text-danger
-    $label = str_replace(
-        '<span class="acf-required">*</span>',
-        '<span class="acf-required text-danger">*</span>',
-        $label
-    );
-    return $label;
-}
-// end adding text-danger on required
-// asignacion de titulo y enlace a las pre-solicitudes de servicios
-function pre_application_title_update($post_id, $object)
-{
-    $pre_solicitud_post = [];
-    $pre_solicitud_post['ID'] = $post_id;
-    $nombres = $_POST['acf']['field_6183eb70d40ee'];
-    $apellidos = $_POST['acf']['field_6183eb81d40ef'];
-
-    if (
-        get_post_type() == 'pre-application' ||
-        is_page('pre-application-service')
-    ) {
-        $pre_solicitud_post = [
-            'ID' => $post_id,
-            'post_title' => $nombres . ' ' . $apellidos,
-            'post_name' => sanitize_title(
-                $nombres . '-' . $apellidos . '-' . $post_id
-            ),
-            'post_type' => 'pre-application',
-            'post_status' => 'pending',
-        ];
-        wp_update_post($pre_solicitud_post);
-    }
-}
-add_action(
-    'acfe/save_post/post_type=pre-application',
-    'pre_application_title_update',
-    10,
-    3
-);
-// fin asignacion de titulo y enlace a las pre-solicitudes de servicios
-//
-// // Add the custom columns to the book post type:
-add_filter(
-    'manage_pre-application_posts_columns',
-    'set_custom_edit_pre_application_columns'
-);
-function set_custom_edit_pre_application_columns($columns)
-{
-    //unset( $columns['author'] );
-    $columns['services'] = __('Servicios', 'pulpora');
-    //$columns['publisher'] = __( 'Publisher', 'your_text_domain' );
-    return $columns;
+	return ( ( is_archive() || is_author() || is_category() || is_home() || is_single() || ( is_tag() && ( 'post' === $posttype ) ) ) ? true : false );
 }
 
-// Add the data to the custom columns for the book post type:
-add_action(
-    'manage_pre-application_posts_custom_column',
-    'custom_pre_application_column',
-    10,
-    2
-);
-function custom_pre_application_column($column, $post_id)
-{
-    switch ($column) {
-        case 'services':
-            $services_posts = get_field('services');
-            if ($services_posts):
-                foreach ($services_posts as $service):
-                    // Setup this post for WP functions (variable must be named $post).
-                    setup_postdata($service);
-                    echo '<a href="' .
-                        get_permalink() .
-                        '">' .
-                        get_the_title() .
-                        '</a>';
-                endforeach;
-                // Reset the global post object so that the rest of the page works correctly.
-                wp_reset_postdata();
-            endif;
-            break;
 
-        case 'publisher':
-            echo get_post_meta($post_id, 'publisher', true);
-            break;
-    }
+/**
+ * Disable comments for Media (Image-Post, Jetpack-Carousel, etc.)
+ *
+ * @since v1.0
+ */
+function createape_filter_media_comment_status( $open, $post_id = null ) {
+	$media_post = get_post( $post_id );
+	if ( 'attachment' === $media_post->post_type ) {
+		return false;
+	}
+	return $open;
 }
+add_filter( 'comments_open', 'createape_filter_media_comment_status', 10, 2 );
+
+
+/**
+ * Style Edit buttons as badges: https://getbootstrap.com/docs/5.0/components/badge
+ *
+ * @since v1.0
+ */
+function createape_custom_edit_post_link( $output ) {
+	return str_replace( 'class="post-edit-link"', 'class="post-edit-link badge badge-secondary"', $output );
+}
+add_filter( 'edit_post_link', 'createape_custom_edit_post_link' );
+
+function createape_custom_edit_comment_link( $output ) {
+	return str_replace( 'class="comment-edit-link"', 'class="comment-edit-link badge badge-secondary"', $output );
+}
+add_filter( 'edit_comment_link', 'createape_custom_edit_comment_link' );
+
+
+/**
+ * Responsive oEmbed filter: https://getbootstrap.com/docs/5.0/helpers/ratio
+ *
+ * @since v1.0
+ */
+function createape_oembed_filter( $html ) {
+	return '<div class="ratio ratio-16x9">' . $html . '</div>';
+}
+add_filter( 'embed_oembed_html', 'createape_oembed_filter', 10, 4 );
+
+
+if ( ! function_exists( 'createape_content_nav' ) ) :
+	/**
+	 * Display a navigation to next/previous pages when applicable.
+	 *
+	 * @since v1.0
+	 */
+	function createape_content_nav( $nav_id ) {
+		global $wp_query;
+
+		if ( $wp_query->max_num_pages > 1 ) :
+	?>
+			<div id="<?php echo esc_attr( $nav_id ); ?>" class="d-flex mb-4 justify-content-between">
+				<div><?php next_posts_link( '<span aria-hidden="true">&larr;</span> ' . esc_html__( 'Older posts', 'createape' ) ); ?></div>
+				<div><?php previous_posts_link( esc_html__( 'Newer posts', 'createape' ) . ' <span aria-hidden="true">&rarr;</span>' ); ?></div>
+			</div><!-- /.d-flex -->
+	<?php
+		else :
+			echo '<div class="clearfix"></div>';
+		endif;
+	}
+
+	// Add Class.
+	function posts_link_attributes() {
+		return 'class="btn btn-secondary btn-lg"';
+	}
+	add_filter( 'next_posts_link_attributes', 'posts_link_attributes' );
+	add_filter( 'previous_posts_link_attributes', 'posts_link_attributes' );
+endif;
+
+
+/**
+ * Init Widget areas in Sidebar.
+ *
+ * @since v1.0
+ */
+function createape_widgets_init() {
+	// Area 1.
+	register_sidebar(
+		array(
+			'name'          => 'Primary Widget Area (Sidebar)',
+			'id'            => 'primary_widget_area',
+			'before_widget' => '',
+			'after_widget'  => '',
+			'before_title'  => '<h3 class="widget-title">',
+			'after_title'   => '</h3>',
+		)
+	);
+
+	// Area 2.
+	register_sidebar(
+		array(
+			'name'          => 'Secondary Widget Area (Header Navigation)',
+			'id'            => 'secondary_widget_area',
+			'before_widget' => '',
+			'after_widget'  => '',
+			'before_title'  => '<h3 class="widget-title">',
+			'after_title'   => '</h3>',
+		)
+	);
+
+	// Area 3.
+	register_sidebar(
+		array(
+			'name'          => 'Third Widget Area (Footer)',
+			'id'            => 'third_widget_area',
+			'before_widget' => '',
+			'after_widget'  => '',
+			'before_title'  => '<h3 class="widget-title">',
+			'after_title'   => '</h3>',
+		)
+	);
+}
+add_action( 'widgets_init', 'createape_widgets_init' );
+
+
+if ( ! function_exists( 'createape_article_posted_on' ) ) :
+	/**
+	 * "Theme posted on" pattern.
+	 *
+	 * @since v1.0
+	 */
+	function createape_article_posted_on() {
+		printf(
+			wp_kses_post( __( '<span class="sep">Posted on </span><a href="%1$s" title="%2$s" rel="bookmark"><time class="entry-date" datetime="%3$s">%4$s</time></a><span class="by-author"> <span class="sep"> by </span> <span class="author-meta vcard"><a class="url fn n" href="%5$s" title="%6$s" rel="author">%7$s</a></span></span>', 'createape' ) ),
+			esc_url( get_the_permalink() ),
+			esc_attr( get_the_date() . ' - ' . get_the_time() ),
+			esc_attr( get_the_date( 'c' ) ),
+			esc_html( get_the_date() . ' - ' . get_the_time() ),
+			esc_url( get_author_posts_url( (int) get_the_author_meta( 'ID' ) ) ),
+			sprintf( esc_attr__( 'View all posts by %s', 'createape' ), get_the_author() ),
+			get_the_author()
+		);
+	}
+endif;
+
+
+/**
+ * Template for Password protected post form.
+ *
+ * @since v1.0
+ */
+function createape_password_form() {
+	global $post;
+	$label = 'pwbox-' . ( empty( $post->ID ) ? rand() : $post->ID );
+
+	$output = '<div class="row">';
+		$output .= '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" method="post">';
+		$output .= '<h4 class="col-md-12 alert alert-warning">' . esc_html__( 'This content is password protected. To view it please enter your password below.', 'createape' ) . '</h4>';
+			$output .= '<div class="col-md-6">';
+				$output .= '<div class="input-group">';
+					$output .= '<input type="password" name="post_password" id="' . esc_attr( $label ) . '" placeholder="' . esc_attr__( 'Password', 'createape' ) . '" class="form-control" />';
+					$output .= '<div class="input-group-append"><input type="submit" name="submit" class="btn btn-primary" value="' . esc_attr__( 'Submit', 'createape' ) . '" /></div>';
+				$output .= '</div><!-- /.input-group -->';
+			$output .= '</div><!-- /.col -->';
+		$output .= '</form>';
+	$output .= '</div><!-- /.row -->';
+	return $output;
+}
+add_filter( 'the_password_form', 'createape_password_form' );
+
+
+if ( ! function_exists( 'createape_comment' ) ) :
+	/**
+	 * Style Reply link.
+	 *
+	 * @since v1.0
+	 */
+	function createape_replace_reply_link_class( $class ) {
+		return str_replace( "class='comment-reply-link", "class='comment-reply-link btn btn-outline-secondary", $class );
+	}
+	add_filter( 'comment_reply_link', 'createape_replace_reply_link_class' );
+
+	/**
+	 * Template for comments and pingbacks:
+	 * add function to comments.php ... wp_list_comments( array( 'callback' => 'createape_comment' ) );
+	 *
+	 * @since v1.0
+	 */
+	function createape_comment( $comment, $args, $depth ) {
+		$GLOBALS['comment'] = $comment;
+		switch ( $comment->comment_type ) :
+			case 'pingback':
+			case 'trackback':
+	?>
+		<li class="post pingback">
+			<p><?php esc_html_e( 'Pingback:', 'createape' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( esc_html__( 'Edit', 'createape' ), '<span class="edit-link">', '</span>' ); ?></p>
+	<?php
+				break;
+			default:
+	?>
+		<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+			<article id="comment-<?php comment_ID(); ?>" class="comment">
+				<footer class="comment-meta">
+					<div class="comment-author vcard">
+						<?php
+							$avatar_size = ( '0' !== $comment->comment_parent ? 68 : 136 );
+							echo get_avatar( $comment, $avatar_size );
+
+							/* translators: 1: comment author, 2: date and time */
+							printf(
+								wp_kses_post( __( '%1$s, %2$s', 'createape' ) ),
+								sprintf( '<span class="fn">%s</span>', get_comment_author_link() ),
+								sprintf( '<a href="%1$s"><time datetime="%2$s">%3$s</time></a>',
+									esc_url( get_comment_link( $comment->comment_ID ) ),
+									get_comment_time( 'c' ),
+									/* translators: 1: date, 2: time */
+									sprintf( esc_html__( '%1$s ago', 'createape' ), human_time_diff( (int) get_comment_time( 'U' ), current_time( 'timestamp' ) ) )
+								)
+							);
+
+							edit_comment_link( esc_html__( 'Edit', 'createape' ), '<span class="edit-link">', '</span>' );
+						?>
+					</div><!-- .comment-author .vcard -->
+
+					<?php if ( '0' === $comment->comment_approved ) : ?>
+						<em class="comment-awaiting-moderation"><?php esc_html_e( 'Your comment is awaiting moderation.', 'createape' ); ?></em>
+						<br />
+					<?php endif; ?>
+				</footer>
+
+				<div class="comment-content"><?php comment_text(); ?></div>
+
+				<div class="reply">
+					<?php
+						comment_reply_link(
+							array_merge(
+								$args,
+								array(
+									'reply_text' => esc_html__( 'Reply', 'createape' ) . ' <span>&darr;</span>',
+									'depth'      => $depth,
+									'max_depth'  => $args['max_depth'],
+								)
+							)
+						);
+					?>
+				</div><!-- /.reply -->
+			</article><!-- /#comment-## -->
+		<?php
+				break;
+		endswitch;
+	}
+
+	/**
+	 * Custom Comment form.
+	 *
+	 * @since v1.0
+	 * @since v1.1: Added 'submit_button' and 'submit_field'
+	 * @since v2.0.2: Added '$consent' and 'cookies'
+	 */
+	function createape_custom_commentform( $args = array(), $post_id = null ) {
+		if ( null === $post_id ) {
+			$post_id = get_the_ID();
+		}
+
+		$commenter     = wp_get_current_commenter();
+		$user          = wp_get_current_user();
+		$user_identity = $user->exists() ? $user->display_name : '';
+
+		$args = wp_parse_args( $args );
+
+		$req      = get_option( 'require_name_email' );
+		$aria_req = ( $req ? " aria-required='true' required" : '' );
+		$consent  = ( empty( $commenter['comment_author_email'] ) ? '' : ' checked="checked"' );
+		$fields   = array(
+			'author'  => '<div class="form-floating mb-3">
+							<input type="text" id="author" name="author" class="form-control" value="' . esc_attr( $commenter['comment_author'] ) . '" placeholder="' . esc_html__( 'Name', 'createape' ) . ( $req ? '*' : '' ) . '"' . $aria_req . ' />
+							<label for="author">' . esc_html__( 'Name', 'createape' ) . ( $req ? '*' : '' ) . '</label>
+						</div>',
+			'email'   => '<div class="form-floating mb-3">
+							<input type="email" id="email" name="email" class="form-control" value="' . esc_attr( $commenter['comment_author_email'] ) . '" placeholder="' . esc_html__( 'Email', 'createape' ) . ( $req ? '*' : '' ) . '"' . $aria_req . ' />
+							<label for="email">' . esc_html__( 'Email', 'createape' ) . ( $req ? '*' : '' ) . '</label>
+						</div>',
+			'url'     => '',
+			'cookies' => '<p class="form-check mb-3 comment-form-cookies-consent">
+							<input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" class="form-check-input" type="checkbox" value="yes"' . $consent . ' />
+							<label class="form-check-label" for="wp-comment-cookies-consent">' . esc_html__( 'Save my name, email, and website in this browser for the next time I comment.', 'createape' ) . '</label>
+						</p>',
+		);
+
+		$defaults = array(
+			'fields'               => apply_filters( 'comment_form_default_fields', $fields ),
+			'comment_field'        => '<div class="form-floating mb-3">
+											<textarea id="comment" name="comment" class="form-control" aria-required="true" required placeholder="' . esc_attr__( 'Comment', 'createape' ) . ( $req ? '*' : '' ) . '"></textarea>
+											<label for="comment">' . esc_html__( 'Comment', 'createape' ) . '</label>
+										</div>',
+			/** This filter is documented in wp-includes/link-template.php */
+			'must_log_in'          => '<p class="must-log-in">' . sprintf( wp_kses_post( __( 'You must be <a href="%s">logged in</a> to post a comment.', 'createape' ) ), wp_login_url( apply_filters( 'the_permalink', get_the_permalink( get_the_ID() ) ) ) ) . '</p>',
+			/** This filter is documented in wp-includes/link-template.php */
+			'logged_in_as'         => '<p class="logged-in-as">' . sprintf( wp_kses_post( __( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s" title="Log out of this account">Log out?</a>', 'createape' ) ), get_edit_user_link(), $user->display_name, wp_logout_url( apply_filters( 'the_permalink', get_the_permalink( get_the_ID() ) ) ) ) . '</p>',
+			'comment_notes_before' => '<p class="small comment-notes">' . esc_html__( 'Your Email address will not be published.', 'createape' ) . '</p>',
+			'comment_notes_after'  => '',
+			'id_form'              => 'commentform',
+			'id_submit'            => 'submit',
+			'class_submit'         => 'btn btn-primary',
+			'name_submit'          => 'submit',
+			'title_reply'          => '',
+			'title_reply_to'       => esc_html__( 'Leave a Reply to %s', 'createape' ),
+			'cancel_reply_link'    => esc_html__( 'Cancel reply', 'createape' ),
+			'label_submit'         => esc_html__( 'Post Comment', 'createape' ),
+			'submit_button'        => '<input type="submit" id="%2$s" name="%1$s" class="%3$s" value="%4$s" />',
+			'submit_field'         => '<div class="form-submit">%1$s %2$s</div>',
+			'format'               => 'html5',
+		);
+
+		return $defaults;
+	}
+	add_filter( 'comment_form_defaults', 'createape_custom_commentform' );
+
+endif;
+
+
+/**
+ * Nav menus.
+ *
+ * @since v1.0
+ */
+if ( function_exists( 'register_nav_menus' ) ) {
+	register_nav_menus(
+		array(
+			'main-menu'   => 'Main Navigation Menu',
+			'footer-menu' => 'Footer Menu',
+		)
+	);
+}
+
+// Custom Nav Walker: wp_bootstrap_navwalker().
+$custom_walker = __DIR__ . '/inc/wp_bootstrap_navwalker.php';
+if ( is_readable( $custom_walker ) ) {
+	require_once $custom_walker;
+}
+
+$custom_walker_footer = __DIR__ . '/inc/wp_bootstrap_navwalker_footer.php';
+if ( is_readable( $custom_walker_footer ) ) {
+	require_once $custom_walker_footer;
+}
+
+
+/**
+ * Loading All CSS Stylesheets and Javascript Files.
+ *
+ * @since v1.0
+ */
+function createape_scripts_loader() {
+	$theme_version = wp_get_theme()->get( 'Version' );
+
+	// 1. Styles.
+	wp_enqueue_style( 'style', get_theme_file_uri( 'style.css' ), array(), $theme_version, 'all' );
+	wp_enqueue_style( 'main', get_theme_file_uri( 'assets/css/main.css' ), array(), $theme_version, 'all' ); // main.scss: Compiled Framework source + custom styles.
+
+	if ( is_rtl() ) {
+		wp_enqueue_style( 'rtl', get_theme_file_uri( 'assets/css/rtl.css' ), array(), $theme_version, 'all' );
+	}
+
+	// 2. Scripts.
+	wp_enqueue_script( 'mainjs', get_theme_file_uri( 'assets/js/main.bundle.js' ), array(), $theme_version, true );
+
+	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
+		wp_enqueue_script( 'comment-reply' );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'createape_scripts_loader' );
