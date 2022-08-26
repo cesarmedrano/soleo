@@ -30,8 +30,11 @@
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
-.btn-primary > a {
-  color: inherit !important;
+.navigation-btn > a {
+  color: var(--white-color)!important;
+  background-color: var(--primary-color);
+  padding: 20px 34px!important;
+  border-radius: 8px;
 }
 .btn-primary:hover {
   background-color: var(--primary-color-hover);

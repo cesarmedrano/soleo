@@ -39,7 +39,7 @@ $header_background_image = get_field("header_background_image");
 		<div class="row">
 			<div class="col-md-9 mx-auto">
 				<div class="row d-flex align-items-center">
-					<div class="col-md-6 p-2">
+					<div class="col-md-6 py-5">
 						<h1><?php echo $title_header; ?></h1>
 						<p class="text-muted"><?php echo $short_description; ?></p>
 						<?php
@@ -67,7 +67,7 @@ $header_background_image = get_field("header_background_image");
 						endif;
 						?>
 					</div>
-					<div class="col-md-6 p-2 pb-0 d-flex align-items-end">
+					<div class="col-md-6 px-2 pt-5 d-flex align-items-end">
 						<div class="col-11 col-md-10 mx-auto position-relative">
 							<div id="delivered-call" class="p-3 rounded bg-white shadow-lg position-absolute" style="width: 276px;">
 								<div class="d-flex justify-content-start">
