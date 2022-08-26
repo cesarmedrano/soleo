@@ -1,0 +1,80 @@
+/* Vars */
+:root {
+  /* colors  */
+  --primary-color: rgba(255, 107, 0, 1);
+  --primary-color-hover: rgb(230, 96, 0);
+  --secondary-color: rgba(35, 36, 79, 1);
+  --secondary-color-hover: rgb(27, 28, 61);
+  --gray: rgba(47, 48, 55, 1);
+  --soft-gray: rgba(124, 126, 139, 1);
+  --white-color: #ffffff;
+}
+/* general */
+.bg-cover {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.bg-primary {
+  background-color: var(--primary-color) !important;
+  color: var(--white-color);
+}
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+.btn {
+  padding: 20px 34px;
+  border-radius: 8px;
+}
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.btn-primary > a {
+  color: inherit !important;
+}
+.btn-primary:hover {
+  background-color: var(--primary-color-hover);
+  border-color: var(--primary-color-hover);
+}
+.btn.btn-light {
+  border-color: var(--gray);
+  background-color: var(--white-color);
+}
+.benefits .text-muted,
+.text-muted {
+  color: var(--soft-gray);
+  font-size: 16px;
+  font-weight: 400;
+}
+.shadow-lg {
+  box-shadow: 0px 60px 120px 0px rgba(56, 58, 114, 0.14) !important;
+  -webkit-box-shadow: 0px 60px 120px 0px rgba(56, 58, 114, 0.14) !important;
+}
+/* end general */
+/* header */
+.navbar-brand img {
+  height: 36px !important;
+}
+/* end header */
+/* conversion rate call component */
+#conversion-rate-call {
+  width: 276px;
+  height: 120px;
+  left: -100px;
+  top: 400px;
+}
+/* end conversion rate call component */
+/* delivered calls component*/
+#delivered-call {
+  top: 295px;
+  left: -70px;
+  z-index: 1;
+}
+/* end delivered calls componet */
+/* new sales componet  */
+#new-sales {
+  top: 150px;
+  right: -200px;
+}
+/* end new sales componet */

@@ -489,7 +489,7 @@ function createape_scripts_loader() {
 	// 1. Styles.
 	wp_enqueue_style( 'style', get_theme_file_uri( 'style.css' ), array(), $theme_version, 'all' );
 	wp_enqueue_style( 'main', get_theme_file_uri( 'assets/css/main.css' ), array(), $theme_version, 'all' ); // main.scss: Compiled Framework source + custom styles.
-
+	wp_enqueue_style( 'custom', get_theme_file_uri( 'assets/css/custom.css' ), array(), $theme_version, 'all' );
 	if ( is_rtl() ) {
 		wp_enqueue_style( 'rtl', get_theme_file_uri( 'assets/css/rtl.css' ), array(), $theme_version, 'all' );
 	}
