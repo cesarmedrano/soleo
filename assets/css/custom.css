@@ -9,7 +9,23 @@
   --soft-gray: rgba(124, 126, 139, 1);
   --white-color: #ffffff;
 }
+/* fonts */
+/* vietnamese */
+@font-face {
+  font-family: "Visuelt Pro";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../fonts/visuelt/VisueltPro-Regular.woff) format("woff");
+}
+/* end fonts  */
 /* general */
+html,
+body {
+  font-family: "Visuelt Pro",sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
 .bg-cover {
   background-repeat: no-repeat;
   background-size: cover;
@@ -23,7 +39,7 @@
   background-color: var(--secondary-color) !important;
 }
 .btn {
-  padding: 20px 34px;
+  padding: 14px 34px;
   border-radius: 8px;
 }
 .btn-primary {
@@ -31,9 +47,9 @@
   border-color: var(--primary-color);
 }
 .navigation-btn > a {
-  color: var(--white-color)!important;
+  color: var(--white-color) !important;
   background-color: var(--primary-color);
-  padding: 20px 34px!important;
+  padding: 14px 34px !important;
   border-radius: 8px;
 }
 .btn-primary:hover {
