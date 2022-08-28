@@ -69,7 +69,7 @@ $search_enabled  = get_theme_mod('search_enabled', '1'); // Get custom meta-valu
 							<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 								<span class="navbar-toggler-icon"></span>
 							</button>
-							<div class="d-none d-lg-block">
+							<div class="d-none d-lg-block d-flex justify-content-center">
 								<?php
 								// Loading WordPress Custom Menu (theme_location).
 								wp_nav_menu(

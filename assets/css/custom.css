@@ -22,7 +22,7 @@
 /* general */
 html,
 body {
-  font-family: "Visuelt Pro",sans-serif;
+  font-family: "Visuelt Pro", sans-serif;
   font-style: normal;
   font-weight: 400;
 }
@@ -30,6 +30,23 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  background: rgb(240, 240, 242);
+  background: -moz-linear-gradient(
+    137deg,
+    rgba(240, 240, 242, 1) 0%,
+    rgba(198, 199, 205, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    137deg,
+    rgba(240, 240, 242, 1) 0%,
+    rgba(198, 199, 205, 1) 100%
+  );
+  background: linear-gradient(
+    137deg,
+    rgba(240, 240, 242, 1) 0%,
+    rgba(198, 199, 205, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f0f0f2",endColorstr="#c6c7cd",GradientType=1);
 }
 .bg-primary {
   background-color: var(--primary-color) !important;
@@ -80,20 +97,81 @@ body {
 #conversion-rate-call {
   width: 276px;
   height: 120px;
-  left: -100px;
-  top: 400px;
+  left: -70px;
+  bottom: 90px;
+  z-index: 1;
 }
 /* end conversion rate call component */
 /* delivered calls component*/
 #delivered-call {
-  top: 295px;
-  left: -70px;
-  z-index: 1;
+  bottom: 200px;
+  left: -40px;
+  z-index: 2;
 }
 /* end delivered calls componet */
 /* new sales componet  */
 #new-sales {
   top: 150px;
-  right: -200px;
+  right: -180px;
 }
 /* end new sales componet */
+/* media query */
+/* Small only */
+@media screen and (max-width: 39.9375em) {
+  /* header main image */
+  #header_main_image {
+    z-index: 2;
+  }
+  /* end header_main_image */
+  /* conversion rate call component */
+  #conversion-rate-call {
+    left: -10px;
+    bottom: 40px;
+    z-index: 3;
+  }
+  /* end conversion rate call component */
+  /* delivered calls component*/
+  #delivered-call {
+    bottom: 148px;
+    left: 20px;
+    z-index: 4;
+  }
+  /* end delivered calls componet */
+  /* new sales */
+  #new-sales {
+    top: -50px;
+    right: 0px;
+    z-index: 1;
+  }
+  /* end new sales */
+}
+/* Medium only */
+@media screen and (min-width: 40em) and (max-width: 63.9375em) {
+  /* conversion rate call component */
+  #conversion-rate-call {
+    left: -10px;
+    bottom: 40px;
+    z-index: 3;
+  }
+  /* end conversion rate call component */
+  /* delivered calls component*/
+  #delivered-call {
+    bottom: 148px;
+    left: 20px;
+    z-index: 4;
+  }
+  /* end delivered calls componet */
+  /* new sales */
+  #new-sales {
+    top: -20px;
+    right: -80px;
+    z-index: 1;
+  }
+  /* end new sales */
+  /* header main image */
+  #header_main_image {
+    z-index: 2;
+  }
+  /* end header_main_image */
+}
+/* end media query */

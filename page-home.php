@@ -34,10 +34,10 @@ $header_background_image = get_field("header_background_image");
 // end background image
 
 ?>
-<div class="bg-cover" style="background-image: url(<?php echo $header_background_image['url'];?>);">
+<div class="bg-cover">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-9 mx-auto">
+			<div class="col-md-12 col-lg-10 mx-auto">
 				<div class="row d-flex align-items-center">
 					<div class="col-md-6 py-5">
 						<h1><?php echo $title_header; ?></h1>
@@ -111,11 +111,12 @@ $header_background_image = get_field("header_background_image");
 									</div>
 								</div>
 							</div>
-
-							<?php
-							if (!empty($header_main_image)) : ?>
-								<img src="<?php echo esc_url($header_main_image['url']); ?>" alt="<?php echo esc_attr($header_main_image['alt']); ?>" class="w-100 mb-0" />
-							<?php endif; ?>
+							<div id="header_main_image" class="position-relative">
+								<?php
+								if (!empty($header_main_image)) : ?>
+									<img src="<?php echo esc_url($header_main_image['url']); ?>" alt="<?php echo esc_attr($header_main_image['alt']); ?>" class="w-100 mb-0" />
+								<?php endif; ?>
+							</div>
 							<div id="new-sales" class="position-absolute shadow-lg rounded">
 								<?php
 								if (!empty($new_sales_image)) : ?>
@@ -136,7 +137,7 @@ $header_background_image = get_field("header_background_image");
 				<h2 class="mt-5"><?php echo $title_benefits; ?></h2>
 				<p><?php echo $description_benefits; ?></p>
 			</div>
-			<div class="col-md-10 mx-auto p-5">
+			<div class="col-md-12 col-lg-10 mx-auto p-5">
 				<div class="row">
 					<?php
 					// Check rows exists to benefits repeater.
