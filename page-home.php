@@ -78,8 +78,8 @@ $header_background_image = get_field("header_background_image");
 										<?php endif; ?>
 									</div>
 									<div class="delivered-call-content px-3">
-										<p class="mb-0 lh-1 text-uppercase"><small><?php echo $delivered_call_title; ?></small></p>
-										<p class="fw-semibold fs-3 mb-0 lh-base"><?php echo $delivered_call_value; ?></p>
+										<p class="mb-0 lh-1 text-uppercase"><small class="text-muted"><?php echo $delivered_call_title; ?></small></p>
+										<p class="fw-semibold fs-2 mb-0 lh-base"><?php echo $delivered_call_value; ?></p>
 										<div class="d-flex justify-content-start">
 											<?php
 											if (!empty($delivered_call_percent_image)) : ?>
@@ -99,8 +99,8 @@ $header_background_image = get_field("header_background_image");
 										<?php endif; ?>
 									</div>
 									<div class="delivered-call-content px-3">
-										<p class="mb-0 lh-1 text-uppercase"><small><?php echo $conversion_rate_title; ?></small></p>
-										<p class="fw-semibold fs-3 mb-0 lh-base"><?php echo $conversion_rate_value["value"] . $conversion_rate_value["append"]; ?></p>
+										<p class="mb-0 lh-1 text-uppercase"><small class="text-muted"><?php echo $conversion_rate_title; ?></small></p>
+										<p class="fw-semibold fs-2 mb-0 lh-base"><?php echo $conversion_rate_value["value"] . $conversion_rate_value["append"]; ?></p>
 										<div class="d-flex justify-content-start">
 											<?php
 											if (!empty($conversion_rate_percent_image)) : ?>
