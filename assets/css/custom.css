@@ -2,7 +2,7 @@
 :root {
   /* colors  */
   --primary-color: rgba(255, 107, 0, 1);
-  --primary-color-hover: rgb(230, 96, 0);
+  --primary-color-hover: rgb(179, 75, 0);
   --secondary-color: rgba(35, 36, 79, 1);
   --secondary-color-hover: rgb(27, 28, 61);
   --gray: rgba(47, 48, 55, 1);
@@ -69,6 +69,9 @@ body {
   padding: 14px 34px !important;
   border-radius: 8px;
 }
+.navigation-btn > a:hover{
+    background-color: var(--primary-color-hover);
+}
 .btn-primary:hover {
   background-color: var(--primary-color-hover);
   border-color: var(--primary-color-hover);
@@ -91,6 +94,9 @@ body {
 /* header */
 .navbar-brand img {
   height: 36px !important;
+}
+.mobile-navigation a {
+    color: var(--bs-black);
 }
 /* end header */
 /* conversion rate call component */
