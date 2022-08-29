@@ -137,7 +137,7 @@ $header_background_image = get_field("header_background_image");
 				<h2 class="mt-5"><?php echo $title_benefits; ?></h2>
 				<p><?php echo $description_benefits; ?></p>
 			</div>
-			<div class="col-md-12 col-lg-10 mx-auto p-5">
+			<div class="col-md-12 col-lg-10 mx-auto py-5">
 				<div class="row">
 					<?php
 					// Check rows exists to benefits repeater.
@@ -151,17 +151,19 @@ $header_background_image = get_field("header_background_image");
 							$title = get_sub_field('title');
 							$description = get_sub_field('description');
 					?>
-							<div class="col-md-4">
-								<div class="p-2 mb-3 d-flex flex-row mb-3 benefits">
-									<div class="p-2">
+							<div class="col-md-4 benefits">
+								<div class="row">
+									<div class="col-2">
 										<?php
 										if (!empty($image)) : ?>
 											<img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" class="" />
 										<?php endif; ?>
 									</div>
-									<div class="p-2">
-										<p class="fw-semibold"><?php echo $title; ?></p>
-										<p class="text-muted"><?php echo $description; ?></p>
+									<div class="col-10">
+										<div class="p-1">
+											<p class="fw-semibold"><?php echo $title; ?></p>
+											<p class="text-muted"><?php echo $description; ?></p>
+										</div>
 									</div>
 								</div>
 							</div>
