@@ -123,6 +123,7 @@ body {
 #new-sales {
   top: 150px;
   right: -180px;
+  width: 300px;
 }
 /* end new sales componet */
 /* media query */
